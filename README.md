@@ -64,42 +64,63 @@ nvcc --version
 # Compile CUDA versions
 nvcc -o v4 v4.cu
 nvcc -o v5 v5.cu -lcublas
-'''
+
+```
 
 ## What I'm Learning
 
 Through this project, I'm gaining hands-on experience with:
 
-- Neural network implementation from scratch
-- CUDA programming fundamentals
-- Memory management optimization techniques
-- Performance profiling and bottleneck identification
-- Trade-offs between high-level frameworks and low-level code
+- Neural network implementation from scratch  
+- CUDA programming fundamentals  
+- Memory management optimization techniques  
+- Performance profiling and bottleneck identification  
+- Trade-offs between high-level frameworks and low-level code  
 
-## Performance Expectations
+---
 
-I expect to see dramatic performance differences between implementations:
+## Performance Expectations (Hypothesis)
+
+I expect to see significant performance improvements as implementations become more GPU-optimized:
 
 | Version | Implementation | Expected Performance |
-|---------|----------------|---------------------|
+|--------|----------------|-------------------|
 | v1.py | PyTorch CUDA | Baseline (fast) |
-| v2.py | NumPy CPU | Much slower than baseline |
-| v3.c | C CPU | Faster than NumPy but still slow |
-| v4.cu | Naive CUDA | Better, but not optimal |
+| v2.py | NumPy CPU | Much slower |
+| v3.c | C CPU | Faster than NumPy, still CPU-bound |
+| v4.cu | Naive CUDA | Noticeable GPU improvement but not optimal |
 | v5.cu | cuBLAS CUDA | Should exceed PyTorch performance |
 
-## Progress Tracking
+---
 
-I'll update this README as I complete each implementation with my personal observations and learning points.
+## Progress Tracking ✅
+
+I will update this section with:
+
+- Performance numbers for each version  
+- What I learned during debugging  
+- GPU vs CPU timing comparisons  
+
+This README will act as my personal learning journal as the project progresses.
+
+---
 
 ## Key CUDA Concepts I'm Learning
 
-- Row vs Column Major matrix layouts
-- Tensor Core acceleration
-- Efficient memory access patterns
-- Kernel launch optimization
-- Advanced techniques like unified memory and CUDA streams
+- Row-major vs column-major matrix layouts  
+- Tensor Core acceleration  
+- Efficient coalesced memory access patterns  
+- Proper kernel launch configurations and occupancy  
+- Unified memory and CUDA streams (future work)  
+
+---
 
 ## Acknowledgements
 
-This project is based on a tutorial that provides a great learning path for CUDA optimization. I'm implementing it myself to gain hands-on experience with these concepts.
+This project is based on a great CUDA optimization learning tutorial.  
+I am implementing the code myself to gain real hands-on experience with:
+
+✅ CUDA kernels  
+✅ cuBLAS  
+✅ GPU memory management  
+✅ Neural network math at a low level  
