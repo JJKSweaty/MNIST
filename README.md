@@ -1,135 +1,105 @@
-# MNIST in CUDA
+# MNIST in CUDA: My Implementation Journey 🚀
 
-![](assets/mnist-mlp.png)
-> Complete implementation progression from PyTorch to optimized CUDA: A step-by-step journey through 5 versions
+Learning CUDA optimization through MNIST digit recognition: My step-by-step implementation journey
 
-## Purpose
+---
 
-This project implements a simple 2-layer MLP (Multi-Layer Perceptron) for MNIST digit classification, progressively optimizing from high-level PyTorch to low-level CUDA implementations. Each version demonstrates different optimization techniques and trade-offs between performance and complexity.
+## About This Project
+I'm working through this project to learn how to optimize neural network code from high-level PyTorch down to optimized CUDA. This repository documents my personal implementation journey as I build a simple MLP for MNIST classification with progressively lower-level code.
 
-**Architecture**: 784 → 256 → 10 (input → hidden → output)  
-**Dataset**: 10,000 MNIST training samples, batch size 8, 10 epochs  
-**Activation**: ReLU, Loss: Cross-entropy, Optimizer: SGD (lr=0.01)
+The original tutorial this is based on provides a fantastic learning path that I'm following to understand the performance implications of different implementation approaches.
 
-## Setup
-> DISCLAIMER: ensure you have a GPU with compute capability 5.0 or greater (at least maxwell architecture). See compatibility guide: https://docs.nvidia.com/deeplearning/cudnn/latest/reference/support-matrix.html
+**My GitHub**: https://github.com/JJKSweaty/MNIST
 
+---
 
+## Model Architecture
 
-### CUDA Setup
-For CUDA versions (v4, v5), ensure you have NVIDIA CUDA toolkit installed:
+| Component | Details |
+|----------|---------|
+| Network | 2-layer MLP (784 → 256 → 10) |
+| Dataset | MNIST (10,000 training samples) |
+| Training | Batch size 8, 10 epochs |
+| Activation | ReLU |
+| Loss | Cross-entropy |
+| Optimizer | SGD (lr = 0.01) |
+
+---
+
+## Implementation Versions
+
+I’ll be implementing each of these versions to understand performance differences:
+
+### ✅ v1.py — PyTorch Baseline
+- High-level PyTorch operations with GPU acceleration  
+- Performance reference implementation  
+
+### ✅ v2.py — NumPy CPU Implementation
+- Pure CPU-based forward/backward  
+- Full understanding of neural network math  
+
+### ⚙️ v3.c — C/CPU Implementation
+- Manual memory management  
+- Timing instrumentation  
+
+### 🔄 v4.cu — Naive CUDA Kernels
+- First CUDA acceleration  
+- GPU memory transfer + kernel launch learning  
+
+### 🔜 v5.cu — cuBLAS Optimized
+- Optimized GEMM with SGEMM  
+- Better memory efficiency  
+- Goal: exceed PyTorch timing  
+
+---
+
+## CUDA Setup & Requirements
+
+Requires: **NVIDIA GPU (Compute Capability ≥ 5.0)**
+
 ```bash
 # Check CUDA installation
 nvcc --version
 
-# Compile v4 (naive CUDA kernels)
+# Compile CUDA versions
 nvcc -o v4 v4.cu
-
-# Compile v5 (cuBLAS optimized)
 nvcc -o v5 v5.cu -lcublas
-```
+'''
 
+## What I'm Learning
 
-## Version Progression
+Through this project, I'm gaining hands-on experience with:
 
-### v1.py - PyTorch Baseline
-- **Framework**: PyTorch with CUDA tensors
-- **Features**: 
-  - High-level PyTorch operations (Linear, ReLU, CrossEntropyLoss)
-  - GPU tensors with automatic memory management
-  - Built-in optimizations (cuDNN, etc.)
-- **Purpose**: Establishes baseline performance and correctness reference
+- Neural network implementation from scratch
+- CUDA programming fundamentals
+- Memory management optimization techniques
+- Performance profiling and bottleneck identification
+- Trade-offs between high-level frameworks and low-level code
 
-### v2.py - NumPy Implementation  
-- **Framework**: Pure NumPy (CPU-only)
-- **Features**:
-  - Manual forward/backward pass implementation
-  - Custom gradient computation and weight updates
-  - He initialization for weights
-- **Purpose**: Demonstrates the underlying math without GPU acceleration
+## Performance Expectations
 
-### v3.c - C/CPU Implementation
-- **Framework**: Pure C with timing breakdown
-- **Features**:
-  - Manual memory management
-  - Detailed timing instrumentation per operation
-  - CPU-optimized matrix operations
-- **Purpose**: Shows CPU performance baseline and prepares for GPU porting
+I expect to see dramatic performance differences between implementations:
 
-### v4.cu - Naive CUDA Kernels
-- **Framework**: CUDA C with custom kernels
-- **Features**:
-  - Custom matrix multiplication kernels
-  - Element-wise operations (ReLU, bias, softmax) on GPU
-  - Manual memory transfers between host and device
-- **Purpose**: First GPU implementation with basic CUDA kernels
+| Version | Implementation | Expected Performance |
+|---------|----------------|---------------------|
+| v1.py | PyTorch CUDA | Baseline (fast) |
+| v2.py | NumPy CPU | Much slower than baseline |
+| v3.c | C CPU | Faster than NumPy but still slow |
+| v4.cu | Naive CUDA | Better, but not optimal |
+| v5.cu | cuBLAS CUDA | Should exceed PyTorch performance |
 
-### v5.cu - cuBLAS Optimized
-- **Framework**: CUDA with cuBLAS library
-- **Features**:
-  - cuBLAS optimized matrix operations (SGEMM, SAXPY)  
-  - Persistent memory buffers to reduce allocations
-  - Minimal host-device synchronization points
-  - Optimized memory access patterns
-- **Purpose**: Production-quality implementation with maximum performance
+## Progress Tracking
 
-## Usage
+I'll update this README as I complete each implementation with my personal observations and learning points.
 
-```bash
-# Run each version
-python v1.py          # PyTorch baseline
-python v2.py          # NumPy CPU implementation  
-gcc -o v3 v3.c -lm && ./v3                    # C CPU implementation
-nvcc -o v4 v4.cu && ./v4                      # Naive CUDA kernels
-nvcc -o v5 v5.cu -lcublas && ./v5             # Optimized cuBLAS
-```
+## Key CUDA Concepts I'm Learning
 
-## Performance Comparison
+- Row vs Column Major matrix layouts
+- Tensor Core acceleration
+- Efficient memory access patterns
+- Kernel launch optimization
+- Advanced techniques like unified memory and CUDA streams
 
-Expected performance characteristics (timing will vary by hardware):
+## Acknowledgements
 
-| Version | Implementation | Typical Training Time | Relative Performance |
-|---------|----------------|---------------------|---------------------|
-| v1.py   | PyTorch CUDA   | ~2-5 seconds        | 100% (baseline)     |
-| v2.py   | NumPy CPU      | ~60-120 seconds     | 5-10% of baseline   |
-| v3.c    | C CPU          | ~40-80 seconds      | 10-15% of baseline  |
-| v4.cu   | Naive CUDA     | ~8-15 seconds       | 30-60% of baseline  |
-| v5.cu   | cuBLAS CUDA    | ~1-3 seconds        | 120-200% of baseline|
-
-### Timing Breakdown Analysis
-
-Each implementation provides detailed timing breakdowns:
-
-**v1 (PyTorch)**: High-level operations with cuDNN optimization
-- Forward pass: ~40% of time
-- Backward pass: ~50% of time  
-- Weight updates: ~5% of time
-- Data loading: ~5% of time
-
-**v5 (cuBLAS Optimized)**: Production-level performance
-- GPU compute (forward + backward + updates): ~60% of time
-- Memory transfers (H2D + D2H): ~30% of time
-- Host computation (loss calculation): ~10% of time
-
-## Performance Insights
-
-Key observations from the implementation progression:
-- **Memory Management**: Persistent buffers (v5) vs per-batch allocation (v4) significantly impacts performance
-- **Library Optimization**: cuBLAS provides highly optimized GEMM operations that outperform naive kernels
-- **CPU-GPU Transfer**: Minimizing host-device synchronization is crucial for GPU performance
-- **Numerical Stability**: Proper softmax implementation with max subtraction prevents overflow
-- **Hardware Utilization**: v5 achieves the best performance by maximizing GPU compute utilization
-
-## Key CUDA Concepts Demonstrated
-
-- [Row vs Column Major](https://stackoverflow.com/questions/56043539/cublassgemm-row-major-multiplication): Matrix layout considerations for GEMM
-- [Tensor Cores](https://docs.nvidia.com/cuda/cublas/#tensor-core-usage): Hardware acceleration for mixed-precision operations
-- **Memory Patterns**: Coalesced access and persistent allocation strategies
-- **Kernel Launch**: Grid/block dimensions and occupancy considerations
-
-## Advanced Optimizations (Not Implemented)
-
-- [Unified Memory](https://github.com/lintenn/cudaAddVectors-explicit-vs-unified-memory): Simplified memory management
-- [CUDA Streams](https://leimao.github.io/blog/CUDA-Stream/): Overlapping computation with data transfer
-- **Mixed Precision**: FP16 operations with Tensor Cores
-- **Kernel Fusion**: Combining operations to reduce memory bandwidth
+This project is based on a tutorial that provides a great learning path for CUDA optimization. I'm implementing it myself to gain hands-on experience with these concepts.
