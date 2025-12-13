@@ -1,4 +1,4 @@
-# MNIST in CUDA: My Implementation Journey 🚀
+# MNIST in CUDA: My Implementation Journey 
 
 Learning CUDA optimization through MNIST digit recognition: My step-by-step implementation journey
 
@@ -30,23 +30,23 @@ The original tutorial this is based on provides a fantastic learning path that I
 
 I’ll be implementing each of these versions to understand performance differences:
 
-### ✅ v1.py — PyTorch Baseline
+###  v1.py — PyTorch Baseline
 - High-level PyTorch operations with GPU acceleration  
 - Performance reference implementation  
 
-### ✅ v2.py — NumPy CPU Implementation
+###  v2.py — NumPy CPU Implementation
 - Pure CPU-based forward/backward  
 - Full understanding of neural network math  
 
-### ⚙️ v3.c — C/CPU Implementation
+###  v3.c — C/CPU Implementation
 - Manual memory management  
 - Timing instrumentation  
 
-### 🔄 v4.cu — Naive CUDA Kernels
+###  v4.cu — Naive CUDA Kernels
 - First CUDA acceleration  
 - GPU memory transfer + kernel launch learning  
 
-### 🔜 v5.cu — cuBLAS Optimized
+### v5.cu — cuBLAS Optimized
 - Optimized GEMM with SGEMM  
 - Better memory efficiency  
 - Goal: exceed PyTorch timing  
@@ -93,7 +93,7 @@ I expect to see significant performance improvements as implementations become m
 
 ---
 
-## Progress Tracking ✅
+## Progress Tracking 
 
 I will update this section with:
 
@@ -120,7 +120,7 @@ This README will act as my personal learning journal as the project progresses.
 This project is based on a great CUDA optimization learning tutorial.  
 I am implementing the code myself to gain real hands-on experience with:
 
-✅ CUDA kernels  
-✅ cuBLAS  
-✅ GPU memory management  
-✅ Neural network math at a low level  
+ CUDA kernels  
+ cuBLAS  
+ GPU memory management  
+ Neural network math at a low level  
